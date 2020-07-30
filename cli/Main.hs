@@ -18,7 +18,7 @@ module Main where
 
 -- import qualified Filesystem.Path.CurrentOS
 import Options.Applicative
-import "protolude" Protolude hiding (find)
+import "protolude" Protolude hiding (find, moduleName)
 import qualified "turtle" Turtle
 import "turtle" Turtle ((</>))
 import qualified "directory" System.Directory
@@ -69,40 +69,36 @@ stripSuffix suffix target =
 makeValidDirectory :: Turtle.FilePath -> Turtle.FilePath
 makeValidDirectory = Turtle.decodeString . appendIfNotAlreadySuffix "/" . Turtle.encodeString
 
+-- __ is a block, -- is now ____ and is a modifier
+classNameToFunctionName :: Text -> Text
+classNameToFunctionName = Text.replace "-" "_" . Text.replace "--" "____"
+
 main :: IO ()
 main = Turtle.sh $ do
-  appOptions <- execParser appOptionsParserInfo
+  appOptions <- liftIO $ execParser appOptionsParserInfo
 
-  cssFileContent <- liftIO $ Turtle.readTextFile filePath
+  cssFileContent <- liftIO $ Turtle.readTextFile (input appOptions)
 
   let (classNames :: [Text]) = cssContentToTypes cssFileContent
 
-  -- pathToModule <- liftIO $ fullPathToModuleName baseDir filePath
+  liftIO $ Turtle.writeTextFile (output appOptions)
+    ( let
+        classesAndFunctions :: [(Text, Text)] = map (\x -> (x, classNameToFunctionName x)) classNames
 
-  -- -- liftIO $ putStrLn @Text $ "output " <> show classNames
-  -- -- liftIO $ putStrLn @Text $ "pathToModule " <> show pathToModule
+        exports = classesAndFunctions & map snd & Text.intercalate ", "
 
-  -- let fileModuleName :: Text = NonEmpty.last (unModuleName pathToModule)
-
-  -- let jsFilePath :: Turtle.FilePath = Turtle.directory filePath Turtle.</> Turtle.decodeString (toS fileModuleName) Turtle.<.> "js"
-  -- let pursFilePath :: Turtle.FilePath = Turtle.directory filePath Turtle.</> Turtle.decodeString (toS fileModuleName) Turtle.<.> "purs"
-
-  -- liftIO $ putStrLn $ "  writing " <> Turtle.encodeString jsFilePath
-  -- liftIO $ putStrLn $ "  writing " <> Turtle.encodeString pursFilePath
-
-  -- liftIO $ Turtle.writeTextFile jsFilePath ("exports.styles = require('./" <> fileModuleName <> ".module.css')")
-  -- liftIO $ Turtle.writeTextFile pursFilePath
-  --   ( let
-  --       imports = Text.unlines $ List.imap (\(index) (className :: Text) -> (if index == 0 then "  { " else "  , ") <> className <> " :: ClassName") classNames
-  --       styles =
-  --         if List.length classNames == 0
-  --             then "foreign import styles :: {}"
-  --             else "foreign import styles ::\n" <> imports <> "  }"
-  --     in Text.unlines
-  --       [ "module Nextjs.Pages.Buttons.CSS (styles) where"
-  --       , ""
-  --       , "import Halogen.HTML (ClassName)"
-  --       , ""
-  --       , styles
-  --       ]
-  --   )
+        functions = classesAndFunctions
+          & map (\(className, func) -> Text.unlines
+                    [ className <> " :: ClassName"
+                    , className <> "= ClassName \"" <> func <> "\""
+                    ]
+                )
+          & Text.intercalate "\n"
+      in Text.unlines
+        [ "module " <> moduleName appOptions <> " (" <> exports <> ") where"
+        , ""
+        , "import Halogen.HTML (ClassName(..))"
+        , ""
+        , functions
+        ]
+    )
