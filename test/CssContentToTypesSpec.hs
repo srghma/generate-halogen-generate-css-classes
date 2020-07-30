@@ -101,5 +101,5 @@ a > .myButton5 {
 spec :: Spec
 spec = do
   it "HistoryToInputsSpec" $ do
-    let (expected :: [Text]) = ["myButton","myButton2","myButton5","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2Pre","classWithBefore2","classWithBefore3","classWithBefore3Post","classInOneLine","myButton3","mdc-slider","mdc-slider-asdf","mdc-slider__track"]
+    let (expected :: [Text]) = ["classInOneLine","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2","classWithBefore2Pre","classWithBefore3","classWithBefore3Post","mdc-slider","mdc-slider-asdf","mdc-slider__track","myButton","myButton2","myButton3","myButton5"]
     cssContentToTypes cssContent `shouldBe` expected

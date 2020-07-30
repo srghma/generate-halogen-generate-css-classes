@@ -32,4 +32,4 @@ extractClassOrId :: Text -> Maybe Text
 extractClassOrId css = join $ map (flip atMay 1) $ flip atMay 0 $ (css =~ [re|\.([\w\-]+)|] :: [[Text]])
 
 cssContentToTypes :: Text -> [Text]
-cssContentToTypes cssContent = ordNub $ catMaybes $ map extractClassOrId $ join $ map extractClassesAndIds $ map extractName $ join $ map collectCssBlocks $ either (const []) identity $ parseNestedBlocks cssContent
+cssContentToTypes cssContent = List.sort $ ordNub $ catMaybes $ map extractClassOrId $ join $ map extractClassesAndIds $ map extractName $ join $ map collectCssBlocks $ either (const []) identity $ parseNestedBlocks cssContent
