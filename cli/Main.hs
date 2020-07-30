@@ -89,8 +89,8 @@ main = Turtle.sh $ do
 
         functions = classesAndFunctions
           & map (\(className, func) -> Text.unlines
-                    [ className <> " :: ClassName"
-                    , className <> "= ClassName \"" <> func <> "\""
+                    [ func <> " :: ClassName"
+                    , func <> " = ClassName \"" <> className <> "\""
                     ]
                 )
           & Text.intercalate "\n"
