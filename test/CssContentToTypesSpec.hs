@@ -66,10 +66,40 @@ a > .myButton5 {
     color: green;
   }
 }
+
+@keyframes mdc-slider-emphasize {
+  0% {
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+  }
+  50% {
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in;
+    -webkit-transform: scale(0.85);
+            transform: scale(0.85);
+  }
+  100% {
+    -webkit-transform: scale(0.571);
+            transform: scale(0.571);
+  }
+}
+.mdc-slider {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  cursor: pointer;
+  touch-action: pan-x;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.mdc-slider-asdf:not(.mdc-slider--disabled) .mdc-slider__track {
+  background-color: #018786;
+  /* @alternate */
+  background-color: var(--mdc-theme-secondary, #018786);
+}
 |]
 
 spec :: Spec
 spec = do
   it "HistoryToInputsSpec" $ do
-    let (expected :: [Text]) = ["myButton","myButton2","myButton5","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2Pre","classWithBefore2","classWithBefore3","classWithBefore3Post","classInOneLine","myButton3"]
+    let (expected :: [Text]) = ["myButton","myButton2","myButton5","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2Pre","classWithBefore2","classWithBefore3","classWithBefore3Post","classInOneLine","myButton3","mdc-slider","mdc-slider-asdf","mdc-slider__track"]
     cssContentToTypes cssContent `shouldBe` expected

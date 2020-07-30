@@ -81,24 +81,28 @@ main = Turtle.sh $ do
 
   let (classNames :: [Text]) = cssContentToTypes cssFileContent
 
-  liftIO $ Turtle.writeTextFile (output appOptions)
-    ( let
-        classesAndFunctions :: [(Text, Text)] = map (\x -> (x, classNameToFunctionName x)) classNames
+  if List.length classNames == 0
+     then liftIO $ putStrLn $ "skipping because of no classes found for " <> (Turtle.encodeString $ input appOptions)
+     else
+       liftIO $ Turtle.writeTextFile (output appOptions)
+         ( let
+             classesAndFunctions :: [(Text, Text)] = map (\x -> (x, classNameToFunctionName x)) classNames
 
-        exports = classesAndFunctions & map snd & Text.intercalate ", "
+             exports = classesAndFunctions & map snd & Text.intercalate ", "
 
-        functions = classesAndFunctions
-          & map (\(className, func) -> Text.unlines
-                    [ func <> " :: ClassName"
-                    , func <> " = ClassName \"" <> className <> "\""
-                    ]
-                )
-          & Text.intercalate "\n"
-      in Text.unlines
-        [ "module " <> moduleName appOptions <> " (" <> exports <> ") where"
-        , ""
-        , "import Halogen.HTML (ClassName(..))"
-        , ""
-        , functions
-        ]
-    )
+             functions = classesAndFunctions
+               & map (\(className, func) -> Text.unlines
+                         [ func <> " :: ClassName"
+                         , func <> " = ClassName \"" <> className <> "\""
+                         ]
+                     )
+               & Text.intercalate "\n"
+           in Text.unlines
+             [ "module " <> moduleName appOptions <> " (" <> exports <> ") where"
+             , ""
+             , "import Halogen.HTML (ClassName(..))"
+             , ""
+             , functions
+             ]
+         )
+

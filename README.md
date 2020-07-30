@@ -64,8 +64,6 @@ gen () {
   # e.g. $2 = "Classes.RMWC.Avatar"
   # e.g. filedir = "Classes/RMWC/Avatar.purs"
   filedir=$(echo -n "$2" | sd --string-mode '.' '/' && echo -n ".purs")
-  echo "$filedir"
-
   output="/home/srghma/projects/purescript-halogen-nextjs/src/$filedir"
   mkdir -p $(dirname $output)
 
