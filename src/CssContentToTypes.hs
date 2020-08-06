@@ -29,7 +29,12 @@ extractClassesAndIds :: Text -> [Text]
 extractClassesAndIds = List.filter (\t -> Text.isPrefixOf "." t) . Text.words
 
 extractClassOrId :: Text -> Maybe Text
-extractClassOrId css = join $ map (flip atMay 1) $ flip atMay 0 $ (css =~ [re|\.([\w\-]+)|] :: [[Text]])
+extractClassOrId css =
+  join
+  $ map (flip atMay 1)
+  $ flip atMay 0
+  -- $ traceShowId
+  $ (css =~ [re|\.((\\\:|\w|\-)+)|] :: [[Text]])
 
 cssContentToTypes :: Text -> [Text]
 cssContentToTypes cssContent = List.sort $ ordNub $ catMaybes $ map extractClassOrId $ join $ map extractClassesAndIds $ map extractName $ join $ map collectCssBlocks $ either (const []) identity $ parseNestedBlocks cssContent

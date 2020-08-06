@@ -91,15 +91,28 @@ a > .myButton5 {
   touch-action: pan-x;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
 .mdc-slider-asdf:not(.mdc-slider--disabled) .mdc-slider__track {
   background-color: #018786;
   /* @alternate */
   background-color: var(--mdc-theme-secondary, #018786);
 }
+
+.xl\:animate-bounce {
+  -webkit-animation: bounce 1s infinite;
+          animation: bounce 1s infinite;
+}
+
+.sm\:animate-other {
+  -webkit-animation: other 1s infinite;
+          animation: other 1s infinite;
+}
+
 |]
 
 spec :: Spec
 spec = do
   it "HistoryToInputsSpec" $ do
-    let (expected :: [Text]) = ["classInOneLine","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2","classWithBefore2Pre","classWithBefore3","classWithBefore3Post","mdc-slider","mdc-slider-asdf","mdc-slider__track","myButton","myButton2","myButton3","myButton5"]
+    let (expected :: [Text]) = ["classInOneLine","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2","classWithBefore2Pre","classWithBefore3","classWithBefore3Post","mdc-slider","mdc-slider-asdf","mdc-slider__track","myButton","myButton2","myButton3","myButton5", "sm\\:animate-other","xl\\:animate-bounce"]
+    -- for_ (cssContentToTypes cssContent) (putStrLn)
     cssContentToTypes cssContent `shouldBe` expected
