@@ -108,11 +108,40 @@ a > .myButton5 {
           animation: other 1s infinite;
 }
 
+@media (min-width: 600px) and (max-width: 839px) {
+  @supports (display: grid) {
+    @supports (display: grid) {
+      @supports (display: grid) {
+        .mdc-layout-grid__inner {
+          display: grid;
+          margin: 0;
+          grid-gap: 16px;
+          grid-gap: var(--mdc-layout-grid-gutter-tablet, 16px);
+          grid-template-columns: repeat(8, minmax(0, 1fr));
+        }
+      }
+    }
+  }
+  @supports (display: grid) {
+    @supports (display: grid) {
+      @supports (display: grid) {
+        .mdc-layout-grid__inner {
+          display: grid;
+          margin: 0;
+          grid-gap: 16px;
+          grid-gap: var(--mdc-layout-grid-gutter-tablet, 16px);
+          grid-template-columns: repeat(8, minmax(0, 1fr));
+        }
+      }
+    }
+  }
+
+}
 |]
 
 spec :: Spec
 spec = do
   it "HistoryToInputsSpec" $ do
-    let (expected :: [Text]) = ["classInOneLine","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2","classWithBefore2Pre","classWithBefore3","classWithBefore3Post","mdc-slider","mdc-slider-asdf","mdc-slider__track","myButton","myButton2","myButton3","myButton5", "sm\\:animate-other","xl\\:animate-bounce"]
+    let (expected :: [Text]) = ["classInOneLine","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2","classWithBefore2Pre","classWithBefore3","classWithBefore3Post","mdc-layout-grid__inner","mdc-slider","mdc-slider-asdf","mdc-slider__track","myButton","myButton2","myButton3","myButton5", "sm\\:animate-other","xl\\:animate-bounce"]
     -- for_ (cssContentToTypes cssContent) (putStrLn)
     cssContentToTypes cssContent `shouldBe` expected
