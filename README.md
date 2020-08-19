@@ -64,7 +64,7 @@ gen () {
   # e.g. $2 = "Classes.RMWC.Avatar"
   # e.g. filedir = "Classes/RMWC/Avatar.purs"
   filedir=$(echo -n "$2" | sd --string-mode '.' '/' && echo -n ".purs")
-  output="/home/srghma/projects/purescript-halogen-nextjs/src/$filedir"
+  output="/home/srghma/projects/purescript-halogen-material-components-web/src/$filedir"
   mkdir -p $(dirname $output)
 
   /home/srghma/projects/generate-halogen-generate-css-classes/.stack-work/dist/x86_64-linux-nix/Cabal-2.4.0.1/build/generate-halogen-generate-css-classes-exe/generate-halogen-generate-css-classes-exe \
