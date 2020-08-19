@@ -137,11 +137,15 @@ a > .myButton5 {
   }
 
 }
+
+.mdc-icon-button__icon.mdc-icon-button__icon--on {
+  display: none;
+}
 |]
 
 spec :: Spec
 spec = do
   it "HistoryToInputsSpec" $ do
-    let (expected :: [Text]) = ["classInOneLine","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2","classWithBefore2Pre","classWithBefore3","classWithBefore3Post","mdc-layout-grid__inner","mdc-slider","mdc-slider-asdf","mdc-slider__track","myButton","myButton2","myButton3","myButton5", "sm\\:animate-other","xl\\:animate-bounce"]
+    let (expected :: [Text]) = ["classInOneLine","classInsideClass","classInsideClass2","classWithBefore1","classWithBefore2","classWithBefore2Pre","classWithBefore3","classWithBefore3Post","mdc-icon-button__icon","mdc-icon-button__icon--on","mdc-layout-grid__inner","mdc-slider","mdc-slider--disabled","mdc-slider-asdf","mdc-slider__track","myButton","myButton2","myButton3","myButton5","sm\\:animate-other","xl\\:animate-bounce"]
     -- for_ (cssContentToTypes cssContent) (putStrLn)
     cssContentToTypes cssContent `shouldBe` expected
